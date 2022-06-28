@@ -10,19 +10,20 @@ class Card {
   init() {
     this.cards = document.querySelectorAll(".field__card");
   }
+  drawPicture() {}
 
   open(e) {
     if (e.target.classList.contains("card--front")) {
       this.cardFront = e.target;
       this.cardBack = e.target.nextElementSibling;
+      this.checkValueMatch();
       this.cardFront.style.transform = `rotateY(180deg)`;
       this.cardFront.style.backfaceVisibility = "hidden";
       this.cardBack.style.transform = "rotateY(0)";
-      this.checkValueMatch();
     }
   }
   checkValueMatch() {
-    if (this.moveCounter <= 1) {
+    if (this.moveCounter == 2) {
       if (this.moveCounter == 0) {
         this.firstMove = this.cardBack.textContent;
         this.moveCounter++;
@@ -30,20 +31,26 @@ class Card {
         this.secoundMove = this.cardBack.textContent;
         this.moveCounter++;
       }
-    } else {
+    } else if (this.moveCounter > 1 && this.firstMove !== this.secoundMove) {
       this.moveCounter = 0;
-      this.firstMove = 0;
-      this.secoundMove = 0;
+      this.firstMove = "";
+      this.secoundMove = "";
+      this.cards.forEach((card) => {
+        card.style.transform = "rotateY(0)";
+        card.style.backfaceVisibility = "visible";
+        card.nextElementSibling.style.transform = "rotate(-180deg)";
+      });
     }
-    console.log(this.moveCounter);
-    console.log(this.firstMove, this.secoundMove);
 
     if (this.firstMove == this.secoundMove) {
       this.match = true;
-      console.log(this.match);
     }
   }
 }
+// Wypchnij ruchy do tablicy
+// Jesli ruchy nie pasuja zamknij wszystkie
+//Jesli pasuja usuń ruchy z tablicy
+// jak tablica będzie pusta wygrane
 
 // const cards = [...document.querySelectorAll(".card--front")];
 // // cards.splice(1, 1);
